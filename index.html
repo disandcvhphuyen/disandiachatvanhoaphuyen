@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: auto;
+            height: 1200px;
+        }
+        </style>
+        <title>BẢN ĐỒ DI SẢN ĐỊA CHẤT, DI SẢN VĂN HÓA VẬT THỂ VÀ DI SẢN PHI VẬT THỂ THỂ KHU VỰC DỰ KIẾN THÀNH LẬP CVĐCPY</title>
+    </head>
+    <body>
+        <h1 style="color:red;font-size:25px;font-family:Times New Roman"> <center>BẢN ĐỒ DI SẢN ĐỊA CHẤT, DI SẢN VĂN HÓA VẬT THỂ VÀ DI SẢN PHI VẬT THỂ THỂ KHU VỰC DỰ KIẾN THÀNH LẬP CVĐCPY</cemter></h1>
+	<h4 style="color:blue;font-size:14px;font-family:Times New Roman"><center> (Phục vụ xây dựng đề tài "Nghiên cứu, đánh giá giá trị di sản địa chất và các di sản
+khác làm cơ sở khoa học hướng tới thành lập Công viên địa chất toàn cầu UNESCO ở tỉnh Phú Yên)</center></p> 
+ 
+	<div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/phuyen_cvdc_84_2.js"></script>
+        <script src="data/TimKiem1_3.js"></script>
+        <script src="data/DS_Phi_vat_the_84_4.js"></script>
+        <script src="data/Di_san_Dia_chat_84_5.js"></script>
+        <script src="data/DS_vat_the_84_6.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[13.298263586051618,109.17093149017087],[13.362206054718659,109.29244493596518]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_VietbandoMaps_0');
+        map.getPane('pane_VietbandoMaps_0').style.zIndex = 400;
+        var layer_VietbandoMaps_0 = L.tileLayer('http://images.vietbando.com/ImageLoader/GetImage.ashx?Ver=2016&LayerIds=VBD&Y={y}&X={x}&Level={z}', {
+            pane: 'pane_VietbandoMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_VietbandoMaps_0;
+        map.addLayer(layer_VietbandoMaps_0);
+        map.createPane('pane_GoogleSatelliteHybrid_1');
+        map.getPane('pane_GoogleSatelliteHybrid_1').style.zIndex = 401;
+        var layer_GoogleSatelliteHybrid_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleSatelliteHybrid_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleSatelliteHybrid_1;
+        map.addLayer(layer_GoogleSatelliteHybrid_1);
+        function pop_phuyen_cvdc_84_2(feature, layer) {
+            var popupContent = '<table border="1" width="280">\
+			<caption>\ <b> <big>THÔNG TIN SỐ LƯỢNG TRÊN ĐỊA BÀN XÃ </caption>\
+                    <tr>\
+                        <th scope="row">Xã</th>\
+                        <td>' + (feature.properties['Xa'] !== null ? autolinker.link(feature.properties['Xa'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Huyện</th>\
+                        <td>' + (feature.properties['Huyen'] !== null ? autolinker.link(feature.properties['Huyen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Số lượng di sản văn hóa</th>\
+                        <td>' + (feature.properties['SL_DT'] !== null ? autolinker.link(feature.properties['SL_DT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Số lượng di sản địa chất</th>\
+                        <td>' + (feature.properties['SL_DS_DC'] !== null ? autolinker.link(feature.properties['SL_DS_DC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Số lượng di sản phi vật thể </th>\
+                        <td>' + (feature.properties['SL_DS_VHPV'] !== null ? autolinker.link(feature.properties['SL_DS_VHPV'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_phuyen_cvdc_84_2_0(feature) {
+            switch(String(feature.properties['Huyen'])) {
+                case 'HUYỆN PHÚ HÒA':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,84,45,0.3)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN SƠN HÒA':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(40,203,34,0.3)',
+                interactive: true,
+            }
+                    break;
+                case 'HUYỆN TUY AN':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,125,179,0.3)',
+                interactive: true,
+            }
+                    break;
+                case 'THÀNH PHỐ TUY HÒA':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,228,205,0.3)',
+                interactive: true,
+            }
+                    break;
+                case 'THỊ XÃ ĐÔNG HÒA':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(77,128,229,0.3)',
+                interactive: true,
+            }
+                    break;
+                case 'THỊ XÃ SÔNG CẦU':
+                    return {
+                pane: 'pane_phuyen_cvdc_84_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,0.3)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(151,66,230,0.3)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_phuyen_cvdc_84_2');
+        map.getPane('pane_phuyen_cvdc_84_2').style.zIndex = 402;
+        map.getPane('pane_phuyen_cvdc_84_2').style['mix-blend-mode'] = 'normal';
+        var layer_phuyen_cvdc_84_2 = new L.geoJson(json_phuyen_cvdc_84_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_phuyen_cvdc_84_2',
+            layerName: 'layer_phuyen_cvdc_84_2',
+            pane: 'pane_phuyen_cvdc_84_2',
+            onEachFeature: pop_phuyen_cvdc_84_2,
+            style: style_phuyen_cvdc_84_2_0,
+        });
+        bounds_group.addLayer(layer_phuyen_cvdc_84_2);
+        map.addLayer(layer_phuyen_cvdc_84_2);
+        function pop_TimKiem1_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Ten_DS'] !== null ? autolinker.link(feature.properties['Ten_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Dia_danh'] !== null ? autolinker.link(feature.properties['Dia_danh'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TimKiem1_3_0() {
+            return {
+                pane: 'pane_TimKiem1_3',
+                radius: 2.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_TimKiem1_3');
+        map.getPane('pane_TimKiem1_3').style.zIndex = 403;
+        map.getPane('pane_TimKiem1_3').style['mix-blend-mode'] = 'normal';
+        var layer_TimKiem1_3 = new L.geoJson(json_TimKiem1_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TimKiem1_3',
+            layerName: 'layer_TimKiem1_3',
+            pane: 'pane_TimKiem1_3',
+            onEachFeature: pop_TimKiem1_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_TimKiem1_3_0(feature));
+            },
+        });
+        var cluster_TimKiem1_3 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_TimKiem1_3.addLayer(layer_TimKiem1_3);
+
+        bounds_group.addLayer(layer_TimKiem1_3);
+        function pop_DS_Phi_vat_the_84_4(feature, layer) {
+            var popupContent = '<table border="1" width="320">\
+			<caption>\ <b> <big>THÔNG TIN ĐIỂM DI SẢN</caption>\
+                    <tr>\
+                        <th scope="row">Tên di sản</th>\
+                        <td  width="65%">' + (feature.properties['Ten_DS'] !== null ? autolinker.link(feature.properties['Ten_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Địa danh</th>\
+                        <td>' + (feature.properties['Dia_danh'] !== null ? autolinker.link(feature.properties['Dia_danh'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Thời gian tổ chức</th>\
+                        <td>' + (feature.properties['Mota'] !== null ? autolinker.link(feature.properties['Mota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Cấp di sản</th>\
+                        <td>' + (feature.properties['Cap_DS'] !== null ? autolinker.link(feature.properties['Cap_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Phân loại di sản</th>\
+                        <td>' + (feature.properties['Ploai_DS'] !== null ? autolinker.link(feature.properties['Ploai_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Mô tả di sản</th>\
+                        <td>' + (feature.properties['MoTa_DS'] !== null ? autolinker.link(feature.properties['MoTa_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DS_Phi_vat_the_84_4_0(feature) {
+            switch(String(feature.properties['Ploai_DS'])) {
+                case 'Lễ hội truyền thống':
+                    return {
+                pane: 'pane_DS_Phi_vat_the_84_4',
+                shape: 'diamond',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(57,210,161,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Nghệ thuật trình diễn dân gian':
+                    return {
+                pane: 'pane_DS_Phi_vat_the_84_4',
+                shape: 'diamond',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,222,70,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tập quán xã hội và tín ngưỡng':
+                    return {
+                pane: 'pane_DS_Phi_vat_the_84_4',
+                shape: 'diamond',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(128,17,25,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(55,22,203,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_DS_Phi_vat_the_84_4');
+        map.getPane('pane_DS_Phi_vat_the_84_4').style.zIndex = 404;
+        map.getPane('pane_DS_Phi_vat_the_84_4').style['mix-blend-mode'] = 'normal';
+        var layer_DS_Phi_vat_the_84_4 = new L.geoJson(json_DS_Phi_vat_the_84_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_DS_Phi_vat_the_84_4',
+            layerName: 'layer_DS_Phi_vat_the_84_4',
+            pane: 'pane_DS_Phi_vat_the_84_4',
+            onEachFeature: pop_DS_Phi_vat_the_84_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_DS_Phi_vat_the_84_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_DS_Phi_vat_the_84_4);
+        map.addLayer(layer_DS_Phi_vat_the_84_4);
+        function pop_Di_san_Dia_chat_84_5(feature, layer) {
+            var popupContent = '<table border="1" width="320">\
+			<caption>\ <b> <big>THÔNG TIN ĐIỂM DI SẢN</caption>\
+                    <tr>\
+                        <th scope="row">Tên di sản</th>\
+                        <td  width="65%">' + (feature.properties['Ten_DS'] !== null ? autolinker.link(feature.properties['Ten_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Địa danh</th>\
+                        <td>' + (feature.properties['Dia_danh'] !== null ? autolinker.link(feature.properties['Dia_danh'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Mô tả di sản</th>\
+                        <td>' + (feature.properties['Mota'] !== null ? autolinker.link(feature.properties['Mota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Cấp di sản</th>\
+                        <td>' + (feature.properties['Cap_DS'] !== null ? autolinker.link(feature.properties['Cap_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kiểu loại di sản </th>\
+                        <td>' + (feature.properties['Loai_DS'] !== null ? autolinker.link(feature.properties['Loai_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Tên kiểu di sản</th>\
+                        <td>' + (feature.properties['Kyhieu_DS'] !== null ? autolinker.link(feature.properties['Kyhieu_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Di_san_Dia_chat_84_5_0(feature) {
+            switch(String(feature.properties['Kyhieu_DS'])) {
+                case 'Kiểu A':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(204,170,34,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu B':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,57,231,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu C':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(212,108,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu D':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(75,200,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu E':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,98,143,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu F':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(162,216,82,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu H':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(57,87,222,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu I':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(27,208,136,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiểu L':
+                    return {
+                pane: 'pane_Di_san_Dia_chat_84_5',
+                shape: 'triangle',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(143,87,221,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Di_san_Dia_chat_84_5');
+        map.getPane('pane_Di_san_Dia_chat_84_5').style.zIndex = 405;
+        map.getPane('pane_Di_san_Dia_chat_84_5').style['mix-blend-mode'] = 'normal';
+        var layer_Di_san_Dia_chat_84_5 = new L.geoJson(json_Di_san_Dia_chat_84_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Di_san_Dia_chat_84_5',
+            layerName: 'layer_Di_san_Dia_chat_84_5',
+            pane: 'pane_Di_san_Dia_chat_84_5',
+            onEachFeature: pop_Di_san_Dia_chat_84_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.shapeMarker(latlng, style_Di_san_Dia_chat_84_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Di_san_Dia_chat_84_5);
+        map.addLayer(layer_Di_san_Dia_chat_84_5);
+        function pop_DS_vat_the_84_6(feature, layer) {
+            var popupContent = '<table border="1" width="320">\
+			<caption>\ <b> <big>THÔNG TIN ĐIỂM DI SẢN</caption>\
+                     <tr>\
+                        <th scope="row">Tên di sản</th>\
+                        <td width="60%">' + (feature.properties['Ten_di_san'] !== null ? autolinker.link(feature.properties['Ten_di_san'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Địa danh</th>\
+                        <td>' + (feature.properties['Dia_danh'] !== null ? autolinker.link(feature.properties['Dia_danh'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Mô tả di sản</th>\
+                        <td>' + (feature.properties['Mota'] !== null ? autolinker.link(feature.properties['Mota'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Cấp di sản</th>\
+                        <td>' + (feature.properties['Cap_DS'] !== null ? autolinker.link(feature.properties['Cap_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Ký hiệu loại di sản</th>\
+                        <td>' + (feature.properties['PLoai_DS'] !== null ? autolinker.link(feature.properties['PLoai_DS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                     <tr>\
+                     <th scope="row">Loại di sản</th>\
+                        <td>' + (feature.properties['TEN_PHANLO'] !== null ? autolinker.link(feature.properties['TEN_PHANLO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DS_vat_the_84_6_0(feature) {
+            switch(String(feature.properties['TEN_PHANLO'])) {
+                case 'Danh lam thắng cảnh':
+                    return {
+                pane: 'pane_DS_vat_the_84_6',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(161,68,218,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Khảo cổ':
+                    return {
+                pane: 'pane_DS_vat_the_84_6',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(44,138,206,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kiến trúc nghệ thuật':
+                    return {
+                pane: 'pane_DS_vat_the_84_6',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,70,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Lịch sử':
+                    return {
+                pane: 'pane_DS_vat_the_84_6',
+                radius: 16.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(97,204,120,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_DS_vat_the_84_6');
+        map.getPane('pane_DS_vat_the_84_6').style.zIndex = 406;
+        map.getPane('pane_DS_vat_the_84_6').style['mix-blend-mode'] = 'normal';
+        var layer_DS_vat_the_84_6 = new L.geoJson(json_DS_vat_the_84_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_DS_vat_the_84_6',
+            layerName: 'layer_DS_vat_the_84_6',
+            pane: 'pane_DS_vat_the_84_6',
+            onEachFeature: pop_DS_vat_the_84_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_DS_vat_the_84_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_DS_vat_the_84_6);
+        map.addLayer(layer_DS_vat_the_84_6);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>BẢN ĐỒ DI SẢN ĐỊA CHẤT, DI SẢN VĂN HÓA VẬT THỂ VÀ DI SẢN PHI VẬT THỂ THỂ KHU VỰC DỰ KIẾN THÀNH LẬP CVĐCPY</h2>';
+            };
+            title.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'DS_vat_the_84<br /><table><tr><td style="text-align: center;"><img src="legend/DS_vat_the_84_6_Danhlamthắngcảnh0.png" /></td><td>Danh lam thắng cảnh</td></tr><tr><td style="text-align: center;"><img src="legend/DS_vat_the_84_6_Khảocổ1.png" /></td><td>Khảo cổ</td></tr><tr><td style="text-align: center;"><img src="legend/DS_vat_the_84_6_Kiếntrúcnghệthuật2.png" /></td><td>Kiến trúc nghệ thuật</td></tr><tr><td style="text-align: center;"><img src="legend/DS_vat_the_84_6_Lịchsử3.png" /></td><td>Lịch sử</td></tr></table>': layer_DS_vat_the_84_6,'Di_san_Dia_chat_84<br /><table><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuA0.png" /></td><td>Kiểu A</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuB1.png" /></td><td>Kiểu B</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuC2.png" /></td><td>Kiểu C</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuD3.png" /></td><td>Kiểu D</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuE4.png" /></td><td>Kiểu E</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuF5.png" /></td><td>Kiểu F</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuH6.png" /></td><td>Kiểu H</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuI7.png" /></td><td>Kiểu I</td></tr><tr><td style="text-align: center;"><img src="legend/Di_san_Dia_chat_84_5_KiểuL8.png" /></td><td>Kiểu L</td></tr></table>': layer_Di_san_Dia_chat_84_5,'DS_Phi_vat_the_84<br /><table><tr><td style="text-align: center;"><img src="legend/DS_Phi_vat_the_84_4_Lễhộitruyềnthống0.png" /></td><td>Lễ hội truyền thống</td></tr><tr><td style="text-align: center;"><img src="legend/DS_Phi_vat_the_84_4_Nghệthuậttrìnhdiễndângian1.png" /></td><td>Nghệ thuật trình diễn dân gian</td></tr><tr><td style="text-align: center;"><img src="legend/DS_Phi_vat_the_84_4_Tậpquánxãhộivàtínngưỡng2.png" /></td><td>Tập quán xã hội và tín ngưỡng</td></tr></table>': layer_DS_Phi_vat_the_84_4,'<img src="legend/TimKiem1_3.png" /> TimKiem1': cluster_TimKiem1_3,'phuyen_cvdc_84<br /><table><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_HUYỆNPHÚHÒA0.png" /></td><td>HUYỆN PHÚ HÒA</td></tr><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_HUYỆNSƠNHÒA1.png" /></td><td>HUYỆN SƠN HÒA</td></tr><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_HUYỆNTUYAN2.png" /></td><td>HUYỆN TUY AN</td></tr><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_THÀNHPHỐTUYHÒA3.png" /></td><td>THÀNH PHỐ TUY HÒA</td></tr><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_THỊXÃĐÔNGHÒA4.png" /></td><td>THỊ XÃ ĐÔNG HÒA</td></tr><tr><td style="text-align: center;"><img src="legend/phuyen_cvdc_84_2_THỊXÃSÔNGCẦU5.png" /></td><td>THỊ XÃ SÔNG CẦU</td></tr></table>': layer_phuyen_cvdc_84_2,"Google Satellite Hybrid": layer_GoogleSatelliteHybrid_1,"Vietbando Maps": layer_VietbandoMaps_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_DS_Phi_vat_the_84_4.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Ten_DS'] !== null?String('<div style="color: #8a00f4; font-size: 14pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['Ten_DS']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_DS_Phi_vat_the_84_4'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Di_san_Dia_chat_84_5.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Ten_DS'] !== null?String('<div style="color: #1d35ed; font-size: 10pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['Ten_DS']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Di_san_Dia_chat_84_5'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_DS_vat_the_84_6.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Ten_di_san'] !== null?String('<div style="color: #ff1500; font-size: 10pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['Ten_di_san']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_DS_vat_the_84_6'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_TimKiem1_3,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Ten_DS'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        resetLabels([layer_DS_Phi_vat_the_84_4,layer_Di_san_Dia_chat_84_5,layer_DS_vat_the_84_6]);
+        map.on("zoomend", function(){
+            resetLabels([layer_DS_Phi_vat_the_84_4,layer_Di_san_Dia_chat_84_5,layer_DS_vat_the_84_6]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_DS_Phi_vat_the_84_4,layer_Di_san_Dia_chat_84_5,layer_DS_vat_the_84_6]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_DS_Phi_vat_the_84_4,layer_Di_san_Dia_chat_84_5,layer_DS_vat_the_84_6]);
+        });
+        </script>
+    </body>
+</html>
